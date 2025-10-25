@@ -1,0 +1,13 @@
+{
+  "name": "lazenskyi-house",
+  "version": "1.0.0",
+  "description": "Односторінковий сайт ЖК у Яремче",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "ejs": "^3.1.10"
+  }
+}

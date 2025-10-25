@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Лазеньський Дім — ЖК у Яремче</title>
+  <meta name="description" content="Сучасний житловий комплекс у серці Карпат. Квартири з панорамними вікнами, екологічна зона, вигідне розташування." />
+  <meta name="keywords" content="Яремче, Карпати, житло, новобудова, квартири, нерухомість" />
+  <meta name="author" content="Лазеньський Дім" />
+  <meta property="og:title" content="Лазеньський Дім — ЖК у Яремче" />
+  <meta property="og:description" content="Купуйте квартиру в Карпатах — комфорт, природа, інвестиція." />
+  <meta property="og:image" content="images/preview.jpg" />
+  <meta property="og:url" content="https://lazenskyi.com.ua" />
+  <link rel="icon" href="images/favicon.ico" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #2e3c2f, #6b8e6e);
+      color: #fff;
+    }
+    header {
+      background: url('images/hero.jpg') center/cover no-repeat;
+      height: 100vh;
+      position: relative;
+    }
+    .overlay {
+      background: rgba(0, 0, 0, 0.5);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    nav {
+      background: #1f2d20;
+      padding: 1em;
+      text-align: center;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    nav li {
+      margin: 0 1em;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+    }
+    section {
+      padding: 3em 1em;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .gallery-grid, .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1em;
+    }
+    img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+    input, textarea {
+      padding: 0.5em;
+      border: none;
+      border-radius: 4px;
+    }
+    button {
+      background: #4caf50;
+      color: white;
+      padding: 0.7em;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    footer {
+      background: #1f2d20;
+      text-align: center;
+      padding: 1em;
+    }
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body itemscope itemtype="https://schema.org/Residence">
+  <header>
+    <div class="overlay">
+      <h1 itemprop="name">Лазеньський Дім</h1>
+      <p>Житловий комплекс у серці Карпат</p>
+      <a href="#about" class="btn">Дізнатись більше</a>
+    </div>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#about">Про будинок</a></li>
+      <li><a href="#construction">Будівництво</a></li>
+      <li><a href="#news">Новини</a></li>
+      <li><a href="#gallery">Галерея</a></li>
+      <li><a href="#plans">Планування</a></li>
+      <li><a href="#benefits">Переваги</a></li>
+      <li><a href="#contact">Контакти</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="about">
+      <h2>Про будинок</h2>
+      <p itemprop="description">Сучасний багатоквартирний будинок з видом на Карпати. Панорамні вікна, екологічні матеріали, енергоефективність.</p>
+    </section>
+
+    <section id="construction">
+      <h2>Стадії будівництва</h2>
+      <ul>
+        <li>Фундамент — завершено</li>
+        <li>Каркас — в процесі</li>
+        <li>Облицювання — заплановано</li>
+        <li>Введення в експлуатацію — 2026</li>
+      </ul>
+    </section>
+
+    <section id="news">
+      <h2>Останні новини</h2>
+      <article>
+        <h3>Жовтень 2025: завершено армування другого поверху</h3>
+        <p>Будівництво йде згідно графіку. Фото — у галереї.</p>
+      </article>
+    </section>
+
+    <section id="gallery">
+      <h2>Галерея</h2>
+      <div class="gallery-grid">
+        <img src="images/1.jpg" alt="Будівництво" />
+        <img src="images/2.jpg" alt="Вид на гори" />
+        <img src="images/3.jpg" alt="Планування квартир" />
+      </div>
+    </section>
+
+    <section id="plans">
+      <h2>Планування квартир</h2>
+      <div class="plans-grid">
+        <img src="images/plan1.jpg" alt="1-кімнатна" />
+        <img src="images/plan2.jpg" alt="2-кімнатна" />
+        <img src="images/plan3.jpg" alt="Дворівнева" />
+      </div>
+    </section>
+
+    <section id="benefits">
+      <h2>Переваги</h2>
+      <ul>
+        <li>🌲 Екологічно чистий регіон</li>
+        <li>🚉 Поруч вокзал та центр</li>
+        <li>🏞️ Власна рекреаційна зона</li>
+        <li>🔒 Відеоспостереження та охорона</li>
+      </ul>
+    </section>
+
+    <section id="contact">
+      <h2>Контакти</h2>
+      <p>📞 +380 (67) 123-45-67</p>
+      <p>📧 info@lazenskyi.com.ua</p>
+      <p>📍 вул. Свободи, 12, Яремче</p>
+      <form id="contact-form">
+        <input type="text" placeholder="Ваше ім’я" required />
+        <input type="email" placeholder="Email" required />
+        <textarea placeholder="Ваше повідомлення" required></textarea>
+        <button type="submit">Надіслати</button>
+      </form>
+      <iframe src="https://maps.google.com/maps?q=Yaremche,%20Ukraine&t=&z=13&ie=UTF8&iwloc=&output=embed" loading="lazy" width="100%" height="300" style="border:0;"></iframe>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Лазеньський Дім. Всі права захищено.</p>
+  </footer>
+
+  <script>
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Дякуємо! Ваше повідомлення надіслано.');
+    });
+  </script>
+</body>
+</html>

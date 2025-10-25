@@ -1,0 +1,437 @@
+/* Web Fonts -------------------- */
+@font-face {
+  font-family: 'Abolition Regular';
+  src: url('../fonts/abolition-regular-webfont.eot');
+  src: url('../fonts/abolition-regular-webfont.eot?#iefix') format('embedded-opentype'),
+
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    min-height: 100vh;
+    font-family: "Abolition Regular", Helvetica, Arial, sans-serif;
+    background: linear-gradient(rgba(105, 170, 105, 0.5), rgba(240, 125, 10, 0.5)),
+                url('./images/mountains.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+h1 {
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: normal;
+  line-height: 1.3;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .8);
+  margin: 12px 0 0;
+}
+
+header {
+    height: 100vh;
+    position: relative;
+}
+
+.overlay {
+    background: rgba(0, 0, 0, 0.222);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    padding: 0 1em;
+}
+
+.overlay-title {
+  font-size: 4rem;
+  color: #71797e83;
+}
+
+/* Logo */
+#logo {
+  width: 250px;
+  height: 250px;
+  margin: 50px;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  background-size:cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#logo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+  border: 2px solid #f8d7da;
+}
+
+/* Pulse animation for regular attention */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  }
+}
+
+#logo.pulse {
+  animation: pulse 2s infinite;
+}
+
+nav {
+    background: #1f2d20;
+    padding: 1em;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+nav li {
+    margin: 0 1em;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+section {
+    padding: 3em 1em;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.gallery-grid, .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1em;
+}
+
+img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+input, textarea {
+    padding: 0.5em;
+    border: none;
+    border-radius: 4px;
+}
+
+button {
+    background: #4caf50;
+    color: white;
+    padding: 0.7em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+footer {
+    background: #1f2d20;
+    text-align: center;
+    padding: 1em;
+}
+
+footer p {
+    color: #fff;
+    margin: 1em;
+}
+
+/* Sections */
+#about {
+  backdrop-filter: blur(6px);
+  padding: 3rem 1rem;
+  border-radius: 0.75rem;
+}
+
+#about h2 {
+  font-size: 2.25rem;
+  font-weight: normal;
+  color: #212529;
+  margin-bottom: 1.5rem;
+}
+
+#about p.lead {
+  font-size: 1.2rem;
+  color: #fff;
+  line-height: 1.6;
+}
+
+#about h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 0.5rem;
+}
+
+#about .bg-white {
+  background-color: #ffffff;
+  border-left: 4px solid #198754; /* зелений акцент */
+}
+
+#about .shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+#about .fs-5 {
+  font-size: 1.25rem;
+  color: #212529;
+}
+
+#about .fw-semibold {
+  font-weight: 600;
+}
+
+#about .text-dark {
+  text-align: center;
+}
+
+
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+    }
+
+    .overlay-title {
+      font-size: 2.5rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    nav ul {
+        flex-direction: row;
+    }
+
+    .overlay-title {
+      font-size: 4rem;
+    }
+}
+
+/* === Переваги === */
+#benefits ul {
+  list-style: none;
+  padding-left: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+#benefits li {
+  background-color: #e9f7ef;
+  border-left: 4px solid #198754;
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  color: #2c3e50;
+  transition: background-color 0.3s ease;
+}
+
+#benefits li:hover {
+  background-color: #d4edda;
+}
+
+/* === Галерея === */
+.gallery-grid img {
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  max-height: 175px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+}
+
+.gallery-grid img:hover {
+  transform: scale(1.5);
+  cursor: pointer;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-grid img {
+        max-height: 200px;
+        object-fit: cover;
+  }
+
+  .gallery-grid img:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+        z-index: 2;
+    }
+}
+
+
+/* === Планування === */
+.plans-grid img {
+  border-radius: 0.5rem;
+  border: 2px solid #dee2e6;
+  transition: border-color 0.3s ease;
+}
+
+.plans-grid img:hover {
+  border-color: #198754;
+}
+
+/* === Контакти === */
+#contact form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+#contact input,
+#contact textarea {
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+#contact button {
+  background-color: #198754;
+  color: #fff;
+  border: none;
+  padding: 0.75rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+#contact button:hover {
+  background-color: #157347;
+}
+
+/* === Заголовки секцій === */
+section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  position: relative;
+  color: #212529;
+}
+
+section h2::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #198754;
+  margin: 1rem auto 0;
+  border-radius: 2px;
+}
+
+/* === Адаптивність === */
+@media (max-width: 768px) {
+  section h2 {
+    font-size: 2rem;
+  }
+
+  #about .lead {
+    font-size: 1.1rem;
+  }
+
+  #benefits ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+.overlay ul.list-inline li {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;
+  margin: 0.25rem;
+  transition: background-color 0.3s ease;
+}
+
+.overlay ul.list-inline li:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.overlay .btn-success {
+  background-color: #198754;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.overlay .btn-success:hover {
+  background-color: #157347;
+}
+
+/* Контактна інформація */
+
+.working-hours {
+    margin-top: 0.5rem;         
+    margin-bottom: 0.5rem;
+}
+
+.working-hours ul {
+  padding-left: 0;
+  /* margin-bottom: 0.5rem; */
+  color: #fff;
+}
+
+.social-links a {
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #f8d7da;
+}
+
+.social-links a {
+  font-size: 1.25rem; /* збільшений розмір тексту та іконки */
+  font-weight: 500;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: 1rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-links a i {
+  font-size: 1.5rem; /* збільшений розмір іконки */
+}
+
+#email {
+  color: #6de2de;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+#contact-form {
+  margin-bottom: 2rem; /* adds space below the form */
+}
