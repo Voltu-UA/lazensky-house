@@ -50,8 +50,8 @@ header {
 
 /* Logo */
 #logo {
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
   margin: 50px;
   cursor: pointer;
   position: relative;
@@ -61,12 +61,12 @@ header {
   border-radius: 50%;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   background-size:cover;
-  background-position: center;
+  background-position:center;
   background-repeat: no-repeat;
 }
 
 #logo:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
   border: 2px solid #f8d7da;
 }
@@ -258,7 +258,7 @@ footer p {
   border-radius: 0.5rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
-  max-height: 175px;
+  max-height: 170px;
   object-fit: cover;
   border-radius: 0.5rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
@@ -290,6 +290,38 @@ footer p {
         z-index: 2;
     }
 }
+
+/* .hidden-image {
+  display: none;
+} */
+
+
+.hidden-image {
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease, height 0.5s ease;
+}
+
+/* Коли показано */
+.hidden-image.show {
+  opacity: 1;
+  visibility: visible;
+  height: auto;
+}
+
+#showMoreBtn {
+  background-color: #198754;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
 
 
 /* === Планування === */
