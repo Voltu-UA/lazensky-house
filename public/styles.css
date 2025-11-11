@@ -279,7 +279,7 @@ footer p {
   }
 
   .gallery-grid img {
-        max-height: 200px;
+        max-height: 320px;
         object-fit: cover;
   }
 
@@ -291,11 +291,6 @@ footer p {
     }
 }
 
-/* .hidden-image {
-  display: none;
-} */
-
-
 .hidden-image {
   opacity: 0;
   visibility: hidden;
@@ -304,7 +299,6 @@ footer p {
   transition: opacity 0.5s ease, height 0.5s ease;
 }
 
-/* Коли показано */
 .hidden-image.show {
   opacity: 1;
   visibility: visible;
@@ -322,17 +316,53 @@ footer p {
   transition: background-color 0.3s ease;
 }
 
-
-
-/* === Планування === */
+/* Планування квартир */
 .plans-grid img {
   border-radius: 0.5rem;
-  border: 2px solid #dee2e6;
-  transition: border-color 0.3s ease;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  transform-origin: center center;
 }
 
 .plans-grid img:hover {
-  border-color: #198754;
+  transform: scale(1.5);
+  cursor: pointer;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .plans-grid img {
+    max-height: 320px;
+        object-fit: cover;
+  }
+
+  .plans-grid img:hover {
+    transform: scale(1.05);
+        cursor: pointer;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+        z-index: 2;
+    }
+}
+
+#showMorePlansBtn {
+  background-color: #198754;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 /* === Контакти === */
@@ -466,4 +496,20 @@ section h2::after {
 
 #contact-form {
   margin-bottom: 2rem; /* adds space below the form */
+}
+
+.hidden-image {
+  display: none;
+}
+.hidden-image.show {
+  display: block;
+}
+
+video {
+  border-radius: 0.75rem; /* smooth rounded corners */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); /* soft shadow */
+  overflow: hidden;
+}
+#construction .gallery-grid {
+  margin-bottom: 1rem;
 }
