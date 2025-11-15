@@ -267,7 +267,7 @@ footer p {
 }
 
 .gallery-grid img:hover {
-  transform: scale(1.5);
+  transform: scale(2);
   cursor: pointer;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
   z-index: 2;
@@ -291,20 +291,6 @@ footer p {
     }
 }
 
-.hidden-image {
-  opacity: 0;
-  visibility: hidden;
-  height: 0;
-  overflow: hidden;
-  transition: opacity 0.5s ease, height 0.5s ease;
-}
-
-.hidden-image.show {
-  opacity: 1;
-  visibility: visible;
-  height: auto;
-}
-
 #showMoreBtn {
   background-color: #198754;
   color: #fff;
@@ -321,7 +307,7 @@ footer p {
   border-radius: 0.5rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
-  max-height: 250px;
+  max-height: 450px;
   object-fit: cover;
   border-radius: 0.5rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
@@ -330,7 +316,7 @@ footer p {
 }
 
 .plans-grid img:hover {
-  transform: scale(1.5);
+  transform: scale(2);
   cursor: pointer;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
   z-index: 2;
@@ -342,15 +328,15 @@ footer p {
   }
 
   .plans-grid img {
-    max-height: 320px;
-        object-fit: cover;
+    max-height: 600px;
+    object-fit: cover;
   }
 
   .plans-grid img:hover {
     transform: scale(1.05);
-        cursor: pointer;
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
-        z-index: 2;
+    cursor: pointer;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    z-index: 2;
     }
 }
 
@@ -363,6 +349,31 @@ footer p {
   border-radius: 0.5rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+
+/* .hidden-image {
+  opacity: 0;
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  transition: opacity 0.5s ease, height 0.5s ease;
+}
+
+.hidden-image.show {
+  opacity: 1;
+  visibility: visible;
+  height: auto;
+} */
+
+.hidden-image {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.hidden-image.show {
+  display: block;
+  opacity: 1;
 }
 
 /* === Контакти === */
@@ -425,6 +436,7 @@ section h2::after {
 
   #benefits ul {
     grid-template-columns: 1fr;
+    text-align: center;
   }
 }
 
@@ -498,18 +510,12 @@ section h2::after {
   margin-bottom: 2rem; /* adds space below the form */
 }
 
-.hidden-image {
-  display: none;
-}
-.hidden-image.show {
-  display: block;
-}
-
 video {
   border-radius: 0.75rem; /* smooth rounded corners */
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); /* soft shadow */
   overflow: hidden;
 }
+
 #construction .gallery-grid {
   margin-bottom: 1rem;
 }
