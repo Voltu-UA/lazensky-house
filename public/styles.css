@@ -519,3 +519,24 @@ video {
 #construction .gallery-grid {
   margin-bottom: 1rem;
 }
+
+
+
+section[id]:focus {
+  outline: none;           /* fallback */
+}
+section[id]:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* better: only show a visible focus ring for keyboard users */
+section[id]:focus-visible {
+  outline: 3px solid rgba(25, 135, 84, 0.85); /* or your brand color */
+  outline-offset: 4px;
+}
+
+section[id]:focus,
+section[id]:focus-visible {
+  outline: none;
+  box-shadow: none;
+}

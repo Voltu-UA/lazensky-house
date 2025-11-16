@@ -93,3 +93,63 @@ window.addEventListener('DOMContentLoaded', () => {
 //   document.querySelectorAll('#construction .hidden-image').forEach(el => el.classList.add('show'));
 //   this.style.display = 'none';
 // });
+
+// document.addEventListener('DOMContentLoaded', function () {
+//   // Map route path to section id (same names used in server)
+//   const path = window.location.pathname.replace(/^\/|\/$/g, '');
+//   const sectionId = path || 'about'; // default scroll target
+//   const el = document.getElementById(sectionId);
+//   if (el) {
+//     // Slight timeout to let images/CSS settle before smooth scrolling
+//     setTimeout(() => {
+//       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+//       // Optional: focus for accessibility
+//       el.setAttribute('tabindex', '-1');
+//       el.focus({ preventScroll: true });
+//     }, 80);
+//   }
+
+//   // Optional: preserve previous scroll behavior on navigation
+//   // Intercept clicks on internal links to keep SPA smooth scroll without reload
+//   document.querySelectorAll('a[href^="/"]').forEach(a => {
+//     a.addEventListener('click', function (e) {
+//       const href = a.getAttribute('href');
+//       // If it's an internal section route, allow default navigation (server renders same page)
+//       // If you want to avoid full reloads, you could preventDefault and scroll manually,
+//       // but current approach keeps server-rendered correct meta for crawlers.
+//     });
+//   });
+// });
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Resolve the path key (empty string for root)
+  const rawPath = window.location.pathname.replace(/^\/|\/$/g, '');
+
+  // Only act when there's a meaningful section path (like 'gallery', 'contact', etc.)
+  if (!rawPath) return;
+
+  const el = document.getElementById(rawPath);
+  if (!el) return;
+
+  // Scroll then replace URL so refresh returns to root
+  // Delay gives the browser time to layout images/CSS before scrolling
+  setTimeout(() => {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Accessibility: focus element without changing scroll position
+    // Keep focus for keyboard users; style with :focus-visible in CSS
+    el.setAttribute('tabindex', '-1');
+    try { el.focus({ preventScroll: true }); } catch (e) {}
+
+    // After a short delay, replace history entry so refresh goes to '/'
+    setTimeout(() => {
+      history.replaceState(null, '', '/');
+    }, 220); // tweak 150-300ms as needed for your content
+  }, 80);
+});
+
+
+

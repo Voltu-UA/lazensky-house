@@ -8,19 +8,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.render('index');
+// Section keys that map to element IDs in index.ejs
+const sections = ['', 'about', 'construction', 'gallery', 'plans', 'benefits', 'contact'];
+
+// Create routes for each section (/, /about, /gallery, /contact, ...)
+sections.forEach(key => {
+  const route = key === '' ? '/' : `/${key}`;
+  app.get(route, (req, res) => {
+    res.render('index', { page: key || 'home' });
+  });
 });
 
+// Contact form handler remains the same
 app.post('/contact', (req, res) => {
   const { name, email, message } = req.body;
   console.log(`Received contact form submission: Name=${name}, Email=${email}, Message=${message}`);
-  // handle the data (e.g., save to DB, send email)
+  // TODO: save/send message
   res.send('Thank you for your message!');
 });
 
-
-
-app.listen(3000, () => {
-  console.log('Server is listening on: http://localhost:3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is listening on: http://localhost:${PORT}`);
 });

@@ -3,14 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Лазеньський Дім — ЖК у Яремче</title>
-  <meta name="description" content="Сучасний житловий комплекс у серці Карпат. Квартири з панорамними вікнами, екологічна зона, вигідне розташування." />
+
+  <%
+    // page variable comes from server: '', 'about', 'gallery', 'contact', etc.
+    const meta = {
+      home: {
+        title: 'Лазеньський Дім — ЖК у Яремче',
+        desc: 'Сучасний житловий комплекс у серці Карпат. Квартири з панорамними вікнами, екологічна зона, вигідне розташування.',
+        canonical: 'https://lazensky.if.ua/',
+        ogImage: 'https://lazensky.if.ua/images/preview.jpg'
+      },
+      about: {
+        title: 'Про будинок — Лазеньський Дім',
+        desc: 'Деталі про проєкт, концепцію та комфорт житлового комплексу в Яремче.',
+        canonical: 'https://lazensky.if.ua/about',
+        ogImage: 'https://lazensky.if.ua/images/preview-about.jpg'
+      },
+      construction: {
+        title: 'Стадії будівництва — Лазеньський Дім',
+        desc: 'Оновлення та короткі відео з будівельного майданчика ЖК у Яремче.',
+        canonical: 'https://lazensky.if.ua/construction',
+        ogImage: 'https://lazensky.if.ua/images/preview-construction.jpg'
+      },
+      gallery: {
+        title: 'Галерея — Лазеньський Дім',
+        desc: 'Фотографії та відео будівництва, інтер\'єрів та навколишньої природи ЖК у Яремче.',
+        canonical: 'https://lazensky.if.ua/gallery',
+        ogImage: 'https://lazensky.if.ua/images/preview-gallery.jpg'
+      },
+      plans: {
+        title: 'Планування квартир — Лазеньський Дім',
+        desc: 'Планування, площі та варіанти квартир у ЖК Лазеньський Дім.',
+        canonical: 'https://lazensky.if.ua/plans',
+        ogImage: 'https://lazensky.if.ua/images/preview-plans.jpg'
+      },
+      benefits: {
+        title: 'Переваги — Лазеньський Дім',
+        desc: 'Переваги розташування, інфраструктури та характеристик комплексу.',
+        canonical: 'https://lazensky.if.ua/benefits',
+        ogImage: 'https://lazensky.if.ua/images/preview-benefits.jpg'
+      },
+      contact: {
+        title: 'Контакти — Лазеньський Дім',
+        desc: 'Контактна інформація, офіс продажу та форма для запису на перегляд.',
+        canonical: 'https://lazensky.if.ua/contact',
+        ogImage: 'https://lazensky.if.ua/images/preview-contact.jpg'
+      }
+    };
+    const routeKey = (page && page !== 'home') ? page : 'home';
+    const currentMeta = meta[routeKey] || meta.home;
+  %>
+
+  <title><%= currentMeta.title %></title>
+  <meta name="description" content="<%= currentMeta.desc %>" />
+  <link rel="canonical" href="<%= currentMeta.canonical %>" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph (kept dynamic for url & description, image optional per route) -->
+  <meta property="og:title" content="<%= currentMeta.title %>" />
+  <meta property="og:description" content="<%= currentMeta.desc %>" />
+  <meta property="og:image" content="<%= currentMeta.ogImage %>" />
+  <meta property="og:url" content="<%= currentMeta.canonical %>" />
+  <meta property="og:type" content="website" />
+
   <meta name="keywords" content="Яремче, Карпати, житло, новобудова, квартири, нерухомість" />
   <meta name="author" content="Лазеньський Дім" />
-  <meta property="og:title" content="Лазеньський Дім — ЖК у Яремче" />
-  <meta property="og:description" content="Купуйте квартиру в Карпатах — комфорт, природа, інвестиція." />
-  <meta property="og:image" content="images/preview.jpg" />
-  <meta property="og:url" content="https://lazensky.if.ua/"/>
+
   <link rel="icon" href="images/favicon.ico" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -23,25 +81,24 @@
       <h1 class="overlay-title mb-3">Лазеньський Дім</h1>
       <p class="fs-4 mb-4">Ідеальне поєднання комфорту, простору та мальовничих краєвидів в самому серці Карпат</p>
 
-      <!-- Heartbeat Logo -->
-      <a href="#about">
+      <!-- Logo link -->
+      <a href="/about">
         <div id="logo" class="position-relative d-inline-block pulse">
           <img src="images/logo3.png" alt="Лазеньський Дім Логотип" class="img-fluid" />
         </div>
       </a>
-      
     </div>
   </header>
 
+  <!-- Nav -->
   <nav>
     <ul>
-      <li><a href="#about">Про будинок</a></li>
-      <li><a href="#construction">Стадії будівництва</a></li>
-      <!-- <li><a href="#news">Новини</a></li> -->
-      <li><a href="#gallery">Галерея</a></li>
-      <li><a href="#plans">Планування Квартир</a></li>
-      <li><a href="#benefits">Переваги</a></li>
-      <li><a href="#contact">Контакти</a></li>
+      <li><a href="/about">Про будинок</a></li>
+      <li><a href="/construction">Стадії будівництва</a></li>
+      <li><a href="/gallery">Галерея</a></li>
+      <li><a href="/plans">Планування Квартир</a></li>
+      <li><a href="/benefits">Переваги</a></li>
+      <li><a href="/contact">Контакти</a></li>
     </ul>
   </nav>
 
