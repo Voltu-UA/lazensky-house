@@ -1,11 +1,31 @@
-function setupLoadMoreButton(buttonId, itemSelector, batchSize) {
+function setupLoadMoreButton(buttonId, itemSelector, batchSize, options = {}) {
   const button = document.getElementById(buttonId);
   const items = Array.from(document.querySelectorAll(itemSelector));
+  const { deferHiddenImages = false } = options;
 
   if (!button) return;
   if (items.length === 0) {
     button.style.display = 'none';
     return;
+  }
+
+  const getImagesFromItem = (item) => {
+    if (item.tagName === 'IMG') return [item];
+    return Array.from(item.querySelectorAll('img'));
+  };
+
+  if (deferHiddenImages) {
+    items.forEach((item) => {
+      getImagesFromItem(item).forEach((img) => {
+        const src = img.getAttribute('src');
+        if (src && !img.dataset.src) {
+          img.dataset.src = src;
+          img.removeAttribute('src');
+        }
+        img.loading = 'lazy';
+        img.decoding = 'async';
+      });
+    });
   }
 
   let visibleCount = 0;
@@ -14,6 +34,14 @@ function setupLoadMoreButton(buttonId, itemSelector, batchSize) {
     items.forEach((item, index) => {
       const shouldShow = index < visibleCount;
       item.classList.toggle('show', shouldShow);
+
+      if (shouldShow && deferHiddenImages) {
+        getImagesFromItem(item).forEach((img) => {
+          if (!img.getAttribute('src') && img.dataset.src) {
+            img.setAttribute('src', img.dataset.src);
+          }
+        });
+      }
     });
 
     const remaining = Math.max(items.length - visibleCount, 0);
@@ -285,22 +313,7 @@ function setupGalleryEnhancements() {
     });
   }
 
-  // Infinite-like load: when the button approaches viewport, load next batch.
-  if (showMoreButton && 'IntersectionObserver' in window) {
-    let ticking = false;
-    const observer = new IntersectionObserver((entries) => {
-      const hit = entries.some((entry) => entry.isIntersecting);
-      if (!hit || ticking) return;
-      if (!showMoreButton.textContent.includes('Показати')) return;
-
-      ticking = true;
-      showMoreButton.click();
-      window.setTimeout(() => {
-        ticking = false;
-      }, 220);
-    }, { rootMargin: '120px 0px 120px 0px', threshold: 0.01 });
-    observer.observe(showMoreButton);
-  }
+  // Intentional no auto-load on scroll; only explicit button click.
 }
 
 function scrollToSectionByPath() {
@@ -337,7 +350,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setupLoadMoreButton(
     'showMoreBtn',
     '#gallery .hidden-image',
-    3
+    3,
+    { deferHiddenImages: true }
   );
   setupLoadMoreButton(
     'showMorePlansBtn',
