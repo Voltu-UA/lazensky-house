@@ -8,11 +8,38 @@ function setupLoadMoreButton(buttonId, itemSelector, batchSize) {
     return;
   }
 
+  const getImagesFromItem = (item) => {
+    if (item.tagName === 'IMG') return [item];
+    return Array.from(item.querySelectorAll('img'));
+  };
+
+  // Defer loading for hidden media until user asks to show them.
+  items.forEach((item) => {
+    getImagesFromItem(item).forEach((img) => {
+      const src = img.getAttribute('src');
+      if (src && !img.dataset.src) {
+        img.dataset.src = src;
+        img.removeAttribute('src');
+      }
+      img.loading = 'lazy';
+      img.decoding = 'async';
+    });
+  });
+
   let visibleCount = 0;
 
   const render = () => {
     items.forEach((item, index) => {
-      item.classList.toggle('show', index < visibleCount);
+      const shouldShow = index < visibleCount;
+      item.classList.toggle('show', shouldShow);
+
+      if (shouldShow) {
+        getImagesFromItem(item).forEach((img) => {
+          if (!img.getAttribute('src') && img.dataset.src) {
+            img.setAttribute('src', img.dataset.src);
+          }
+        });
+      }
     });
 
     const remaining = Math.max(items.length - visibleCount, 0);
