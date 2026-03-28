@@ -167,9 +167,13 @@ footer p {
 
 /* Sections */
 #about {
-  backdrop-filter: blur(6px);
   padding: 3rem 1rem;
+}
+
+#about .about-content {
+  backdrop-filter: blur(6px);
   border-radius: 0.75rem;
+  padding: 1rem;
 }
 
 #about h2 {
@@ -598,7 +602,8 @@ video {
 }
 
 .construction-month-card {
-  background: rgba(255, 255, 255, 0.12);
+  background: transparent;
+  backdrop-filter: blur(6px);
   border-radius: 0.75rem;
   padding: 1rem;
   transition: opacity 0.18s ease;
@@ -666,7 +671,7 @@ video {
 .construction-media-item {
   display: block;
   text-decoration: none;
-  border-radius: 0.5rem;
+  border-radius: 0.9rem;
   overflow: visible;
   box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease;
@@ -678,6 +683,7 @@ video {
   height: 150px;
   object-fit: cover;
   display: block;
+  border-radius: 0.9rem 0.9rem 0 0;
 }
 
 .construction-video-label {
@@ -687,6 +693,7 @@ video {
   text-align: center;
   font-weight: 600;
   padding: 0.5rem 0.75rem;
+  border-radius: 0 0 0.9rem 0.9rem;
 }
 
 .construction-media-item:hover .construction-video-label {

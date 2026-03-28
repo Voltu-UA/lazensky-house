@@ -35,8 +35,7 @@ function setupLoadMoreButton(buttonId, itemSelector, batchSize) {
 }
 
 function applyResponsiveGalleryInitialState() {
-  const isSmallScreen = window.matchMedia('(max-width: 768px)').matches;
-  const initiallyVisible = isSmallScreen ? 3 : 6;
+  const initiallyVisible = 3;
   const galleryItems = Array.from(document.querySelectorAll('#gallery .gallery-grid > img'));
 
   galleryItems.forEach((item, index) => {
@@ -51,8 +50,7 @@ function applyResponsiveGalleryInitialState() {
 }
 
 function applyResponsivePlansInitialState() {
-  const isSmallScreen = window.matchMedia('(max-width: 768px)').matches;
-  const initiallyVisible = isSmallScreen ? 3 : 6;
+  const initiallyVisible = 3;
   const planItems = Array.from(document.querySelectorAll('#plans .plans-grid > a'));
 
   planItems.forEach((item, index) => {
@@ -258,12 +256,12 @@ document.addEventListener('DOMContentLoaded', () => {
   setupLoadMoreButton(
     'showMoreBtn',
     '#gallery .hidden-image',
-    () => (window.matchMedia('(max-width: 768px)').matches ? 3 : 6)
+    3
   );
   setupLoadMoreButton(
     'showMorePlansBtn',
     '#plans .hidden-image',
-    () => (window.matchMedia('(max-width: 768px)').matches ? 3 : 6)
+    3
   );
   setupConstructionTimeline();
   scrollToSectionByPath();
