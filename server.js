@@ -4,7 +4,18 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.disable('x-powered-by');
+
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: '7d',
+  immutable: false,
+  setHeaders: (res, filePath) => {
+    // Avoid stale UI during active development.
+    if (/\.(css|js|html)$/i.test(filePath)) {
+      res.setHeader('Cache-Control', 'no-store, max-age=0');
+    }
+  }
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -15,16 +26,31 @@ const sections = ['', 'about', 'construction', 'gallery', 'plans', 'benefits', '
 sections.forEach(key => {
   const route = key === '' ? '/' : `/${key}`;
   app.get(route, (req, res) => {
-    res.render('index', { page: key || 'home' });
+    res.render('index', {
+      page: key || 'home',
+      assetVersion: Date.now()
+    });
   });
 });
 
-// Contact form handler remains the same
 app.post('/contact', (req, res) => {
   const { name, email, message } = req.body;
-  console.log(`Received contact form submission: Name=${name}, Email=${email}, Message=${message}`);
-  // TODO: save/send message
-  res.send('Thank you for your message!');
+
+  if (!name || !email || !message) {
+    return res.status(400).json({
+      ok: false,
+      error: 'name, email, and message are required'
+    });
+  }
+
+  console.log('Received contact form submission:', {
+    name: String(name).trim(),
+    email: String(email).trim(),
+    messageLength: String(message).trim().length
+  });
+
+  // TODO: Persist and/or forward submissions to CRM/email service.
+  return res.status(200).json({ ok: true, message: 'Thank you for your message!' });
 });
 
 const PORT = process.env.PORT || 3000;

@@ -1,155 +1,232 @@
-// document.addEventListener('DOMContentLoaded', () => {
-//   const form = document.getElementById('contact-form');
+function setupLoadMoreButton(buttonId, itemSelector, batchSize) {
+  const button = document.getElementById(buttonId);
+  const items = Array.from(document.querySelectorAll(itemSelector));
 
-//   form.addEventListener('submit', (e) => {
-//     e.preventDefault();
-
-//     const formData = {
-//       name: form.elements['name'].value,
-//       email: form.elements['email'].value,
-//       message: form.elements['message'].value
-//     };
-
-//     fetch('/contacts', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify(formData)
-//     })
-//     .then(response => {
-//       if (response.ok) {
-//         alert('Дякуємо! Ваше повідомлення надіслано.');
-//         form.reset();
-//       } else {
-//         alert('Помилка при надсиланні. Спробуйте ще раз.');
-//       }
-//     })
-//     .catch(error => {
-//       console.error('Error:', error);
-//       alert('Не вдалося надіслати повідомлення.');
-//     });
-//   });
-// });
-
-
-// document.addEventListener('DOMContentLoaded', function () {
-//   const btn = document.getElementById('showMoreBtn');
-//   const hiddenImages = document.querySelectorAll('.hidden-image');
-
-//   btn.addEventListener('click', () => {
-//     const isHidden = getComputedStyle(hiddenImages[0]).display === 'none';
-
-//     hiddenImages.forEach(img => {
-//       img.style.display = isHidden ? 'inline-block' : 'none';
-//     });
-
-//     btn.textContent = isHidden ? 'Приховати' : 'Показати більше';
-//   });
-// });
-
-document.addEventListener('DOMContentLoaded', function () {
-  const btn = document.getElementById('showMoreBtn');
-  const hiddenImages = document.querySelectorAll('.hidden-image');
-
-  let isHidden = true;
-
-  btn.addEventListener('click', () => {
-    hiddenImages.forEach(img => {
-      img.classList.toggle('show');
-    });
-
-    isHidden = !isHidden;
-    btn.textContent = isHidden ? 'Показати більше' : 'Приховати';
-  });
-});
-
-
-document.addEventListener('DOMContentLoaded', function () {
-  const btn = document.getElementById('showMorePlansBtn');
-  const hiddenPlans = document.querySelectorAll('#plans .hidden-image');
-
-  let isHidden = true;
-
-  btn.addEventListener('click', () => {
-    hiddenPlans.forEach(img => {
-      img.classList.toggle('show');
-    });
-
-    isHidden = !isHidden;
-    btn.textContent = isHidden ? 'Показати більше' : 'Приховати';
-  });
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-  window.history.scrollRestoration = 'manual';
-  if (window.location.hash) {
-    history.replaceState(null, null, ' ');
+  if (!button) return;
+  if (items.length === 0) {
+    button.style.display = 'none';
+    return;
   }
-  window.scrollTo(0, 0);
-});
 
-// document.getElementById('showMoreConstructionBtn').addEventListener('click', function () {
-//   document.querySelectorAll('#construction .hidden-image').forEach(el => el.classList.add('show'));
-//   this.style.display = 'none';
-// });
+  let visibleCount = 0;
 
-// document.addEventListener('DOMContentLoaded', function () {
-//   // Map route path to section id (same names used in server)
-//   const path = window.location.pathname.replace(/^\/|\/$/g, '');
-//   const sectionId = path || 'about'; // default scroll target
-//   const el = document.getElementById(sectionId);
-//   if (el) {
-//     // Slight timeout to let images/CSS settle before smooth scrolling
-//     setTimeout(() => {
-//       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-//       // Optional: focus for accessibility
-//       el.setAttribute('tabindex', '-1');
-//       el.focus({ preventScroll: true });
-//     }, 80);
-//   }
+  const render = () => {
+    items.forEach((item, index) => {
+      item.classList.toggle('show', index < visibleCount);
+    });
 
-//   // Optional: preserve previous scroll behavior on navigation
-//   // Intercept clicks on internal links to keep SPA smooth scroll without reload
-//   document.querySelectorAll('a[href^="/"]').forEach(a => {
-//     a.addEventListener('click', function (e) {
-//       const href = a.getAttribute('href');
-//       // If it's an internal section route, allow default navigation (server renders same page)
-//       // If you want to avoid full reloads, you could preventDefault and scroll manually,
-//       // but current approach keeps server-rendered correct meta for crawlers.
-//     });
-//   });
-// });
+    const remaining = Math.max(items.length - visibleCount, 0);
+    button.setAttribute('aria-expanded', String(visibleCount > 0));
+    button.textContent = remaining > 0 ? 'Показати ще' : 'Приховати';
+  };
 
+  button.addEventListener('click', () => {
+    const step = typeof batchSize === 'function' ? batchSize() : batchSize;
 
+    if (visibleCount >= items.length) {
+      visibleCount = 0;
+    } else {
+      visibleCount = Math.min(visibleCount + step, items.length);
+    }
+    render();
+  });
 
+  render();
+}
 
-document.addEventListener('DOMContentLoaded', function () {
-  // Resolve the path key (empty string for root)
+function applyResponsiveGalleryInitialState() {
+  const isSmallScreen = window.matchMedia('(max-width: 768px)').matches;
+  const initiallyVisible = isSmallScreen ? 3 : 6;
+  const galleryItems = Array.from(document.querySelectorAll('#gallery .gallery-grid > img'));
+
+  galleryItems.forEach((item, index) => {
+    if (index >= initiallyVisible) {
+      item.classList.add('hidden-image');
+      item.classList.remove('show');
+    } else {
+      item.classList.remove('hidden-image');
+      item.classList.remove('show');
+    }
+  });
+}
+
+function setupConstructionTimeline() {
+  const carousel = document.getElementById('constructionMonthCarousel');
+  const prevButton = document.getElementById('constructionMonthPrev');
+  const nextButton = document.getElementById('constructionMonthNext');
+  const currentLabel = document.getElementById('constructionMonthCurrent');
+  const content = document.getElementById('constructionMonthContent');
+  const video = document.getElementById('constructionVideo');
+  const description = document.getElementById('constructionDescription');
+  const readMoreBtn = document.getElementById('constructionReadMoreBtn');
+  const details = document.getElementById('constructionDetails');
+  const highlights = document.getElementById('constructionHighlights');
+  const photos = document.getElementById('constructionPhotos');
+  const youtubeLink = document.getElementById('constructionYoutubeLink');
+  const dataScript = document.getElementById('constructionUpdatesData');
+
+  if (
+    !carousel || !prevButton || !nextButton || !currentLabel || !content ||
+    !video || !description || !readMoreBtn || !details || !highlights ||
+    !photos || !youtubeLink || !dataScript
+  ) {
+    return;
+  }
+
+  let updates = [];
+  try {
+    updates = JSON.parse(dataScript.textContent || '[]');
+  } catch (error) {
+    console.error('Invalid construction updates JSON', error);
+    return;
+  }
+
+  updates = updates
+    .filter((item) => item && item.year && item.month && item.videoId)
+    .sort((a, b) => (a.year - b.year) || (a.month - b.month));
+
+  if (updates.length === 0) {
+    content.textContent = 'Наразі немає відео для відображення.';
+    carousel.style.display = 'none';
+    return;
+  }
+
+  const monthNames = [
+    'Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень',
+    'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'
+  ];
+
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentYearItems = updates
+    .map((item, index) => ({ ...item, index }))
+    .filter((item) => item.year === currentYear);
+
+  const defaultIndex = currentYearItems.length > 0
+    ? currentYearItems.sort((a, b) => b.month - a.month)[0].index
+    : 0;
+
+  let selectedIndex = defaultIndex;
+  let detailsExpanded = false;
+
+  const renderUpdate = (index) => {
+    const item = updates[index];
+    if (!item) return;
+
+    const embedSrc = `https://www.youtube.com/embed/${item.videoId}?hl=uk&cc_lang_pref=uk&cc_load_policy=1&rel=0`;
+    const videoTitle = `Будівництво за ${monthNames[item.month - 1]} ${item.year}`;
+
+    content.classList.add('construction-month-switching');
+
+    if (video.getAttribute('src') !== embedSrc) {
+      video.setAttribute('src', embedSrc);
+    }
+    video.setAttribute('title', videoTitle);
+    description.textContent = item.description || '';
+    youtubeLink.setAttribute('href', `https://youtube.com/shorts/${item.videoId}`);
+
+    highlights.innerHTML = '';
+    if (Array.isArray(item.highlights)) {
+      item.highlights.forEach((entry) => {
+        const li = document.createElement('li');
+        li.textContent = entry;
+        highlights.append(li);
+      });
+    }
+
+    photos.innerHTML = '';
+    if (Array.isArray(item.photos)) {
+      item.photos.forEach((src) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `Фото будівництва ${monthNames[item.month - 1]} ${item.year}`;
+        img.loading = 'lazy';
+        photos.append(img);
+      });
+    }
+
+    detailsExpanded = false;
+    details.classList.remove('expanded');
+    readMoreBtn.setAttribute('aria-expanded', 'false');
+    readMoreBtn.textContent = 'Читати більше';
+
+    window.requestAnimationFrame(() => {
+      content.classList.remove('construction-month-switching');
+    });
+  };
+
+  const labelFor = (index) => {
+    const item = updates[index];
+    return `${monthNames[item.month - 1]} ${item.year}`;
+  };
+
+  const renderControls = () => {
+    currentLabel.textContent = labelFor(selectedIndex);
+    prevButton.disabled = selectedIndex === 0;
+    nextButton.disabled = selectedIndex === updates.length - 1;
+  };
+
+  prevButton.addEventListener('click', () => {
+    if (selectedIndex <= 0) return;
+    selectedIndex -= 1;
+    renderControls();
+    renderUpdate(selectedIndex);
+  });
+
+  nextButton.addEventListener('click', () => {
+    if (selectedIndex >= updates.length - 1) return;
+    selectedIndex += 1;
+    renderControls();
+    renderUpdate(selectedIndex);
+  });
+
+  readMoreBtn.addEventListener('click', () => {
+    detailsExpanded = !detailsExpanded;
+    details.classList.toggle('expanded', detailsExpanded);
+    readMoreBtn.setAttribute('aria-expanded', String(detailsExpanded));
+    readMoreBtn.textContent = detailsExpanded ? 'Приховати деталі' : 'Читати більше';
+  });
+
+  renderControls();
+  renderUpdate(selectedIndex);
+}
+
+function scrollToSectionByPath() {
   const rawPath = window.location.pathname.replace(/^\/|\/$/g, '');
-
-  // Only act when there's a meaningful section path (like 'gallery', 'contact', etc.)
   if (!rawPath) return;
 
-  const el = document.getElementById(rawPath);
-  if (!el) return;
+  const section = document.getElementById(rawPath);
+  if (!section) return;
 
-  // Scroll then replace URL so refresh returns to root
-  // Delay gives the browser time to layout images/CSS before scrolling
-  setTimeout(() => {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  window.requestAnimationFrame(() => {
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    section.setAttribute('tabindex', '-1');
+    try {
+      section.focus({ preventScroll: true });
+    } catch (error) {
+      section.focus();
+    }
 
-    // Accessibility: focus element without changing scroll position
-    // Keep focus for keyboard users; style with :focus-visible in CSS
-    el.setAttribute('tabindex', '-1');
-    try { el.focus({ preventScroll: true }); } catch (e) {}
+    // Keep direct section routes for SEO, but restore "/" after navigation
+    // so manual refresh returns to the hero/logo view.
+    window.setTimeout(() => {
+      window.history.replaceState(null, '', '/');
+    }, 220);
+  });
+}
 
-    // After a short delay, replace history entry so refresh goes to '/'
-    setTimeout(() => {
-      history.replaceState(null, '', '/');
-    }, 220); // tweak 150-300ms as needed for your content
-  }, 80);
+document.addEventListener('DOMContentLoaded', () => {
+  if ('scrollRestoration' in window.history) {
+    window.history.scrollRestoration = 'manual';
+  }
+
+  applyResponsiveGalleryInitialState();
+  setupLoadMoreButton(
+    'showMoreBtn',
+    '#gallery .hidden-image',
+    () => (window.matchMedia('(max-width: 768px)').matches ? 3 : 6)
+  );
+  setupLoadMoreButton('showMorePlansBtn', '#plans .hidden-image', 6);
+  setupConstructionTimeline();
+  scrollToSectionByPath();
 });
-
-
-
