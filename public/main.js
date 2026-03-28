@@ -232,19 +232,9 @@ function setupGalleryEnhancements() {
     const fullSrc = img.getAttribute('src');
     if (!fullSrc) return;
 
-    const thumbSrc = fullSrc.replace('/images/', '/images/thumbs/');
     img.dataset.full = fullSrc;
     img.loading = 'lazy';
     img.decoding = 'async';
-
-    if (thumbSrc !== fullSrc) {
-      img.setAttribute('src', thumbSrc);
-      img.addEventListener('error', () => {
-        if (img.getAttribute('src') !== fullSrc) {
-          img.setAttribute('src', fullSrc);
-        }
-      }, { once: true });
-    }
   });
 
   let lightbox = document.getElementById('galleryLightbox');
