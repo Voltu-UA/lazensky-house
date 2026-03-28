@@ -223,6 +223,96 @@ function setupConstructionTimeline() {
   renderUpdate(selectedIndex);
 }
 
+function setupGalleryEnhancements() {
+  const galleryImages = Array.from(document.querySelectorAll('#gallery .gallery-grid > img'));
+  const showMoreButton = document.getElementById('showMoreBtn');
+  if (galleryImages.length === 0) return;
+
+  galleryImages.forEach((img) => {
+    const fullSrc = img.getAttribute('src');
+    if (!fullSrc) return;
+
+    const thumbSrc = fullSrc.replace('/images/', '/images/thumbs/');
+    img.dataset.full = fullSrc;
+    img.loading = 'lazy';
+    img.decoding = 'async';
+
+    if (thumbSrc !== fullSrc) {
+      img.setAttribute('src', thumbSrc);
+      img.addEventListener('error', () => {
+        if (img.getAttribute('src') !== fullSrc) {
+          img.setAttribute('src', fullSrc);
+        }
+      }, { once: true });
+    }
+  });
+
+  let lightbox = document.getElementById('galleryLightbox');
+  let lightboxImage = document.getElementById('galleryLightboxImage');
+  let lightboxClose = document.getElementById('galleryLightboxClose');
+
+  if (!lightbox) {
+    lightbox = document.createElement('div');
+    lightbox.id = 'galleryLightbox';
+    lightbox.className = 'gallery-lightbox';
+    lightbox.hidden = true;
+    lightbox.innerHTML = `
+      <button id="galleryLightboxClose" type="button" class="gallery-lightbox-close" aria-label="Закрити">×</button>
+      <img id="galleryLightboxImage" src="" alt="Зображення галереї" />
+    `;
+    document.body.append(lightbox);
+    lightboxImage = document.getElementById('galleryLightboxImage');
+    lightboxClose = document.getElementById('galleryLightboxClose');
+  }
+
+  const openLightbox = (fullSrc, altText) => {
+    if (!lightboxImage || !lightbox) return;
+    lightboxImage.setAttribute('src', fullSrc);
+    lightboxImage.setAttribute('alt', altText || 'Зображення галереї');
+    lightbox.hidden = false;
+  };
+
+  const closeLightbox = () => {
+    if (!lightboxImage || !lightbox) return;
+    lightbox.hidden = true;
+    lightboxImage.setAttribute('src', '');
+  };
+
+  galleryImages.forEach((img) => {
+    img.style.cursor = 'pointer';
+    img.addEventListener('click', () => {
+      openLightbox(img.dataset.full || img.getAttribute('src') || '', img.alt);
+    });
+  });
+
+  if (lightboxClose && lightbox) {
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
+    });
+  }
+
+  // Infinite-like load: when the button approaches viewport, load next batch.
+  if (showMoreButton && 'IntersectionObserver' in window) {
+    let ticking = false;
+    const observer = new IntersectionObserver((entries) => {
+      const hit = entries.some((entry) => entry.isIntersecting);
+      if (!hit || ticking) return;
+      if (!showMoreButton.textContent.includes('Показати')) return;
+
+      ticking = true;
+      showMoreButton.click();
+      window.setTimeout(() => {
+        ticking = false;
+      }, 220);
+    }, { rootMargin: '120px 0px 120px 0px', threshold: 0.01 });
+    observer.observe(showMoreButton);
+  }
+}
+
 function scrollToSectionByPath() {
   const rawPath = window.location.pathname.replace(/^\/|\/$/g, '');
   if (!rawPath) return;
@@ -264,6 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
     '#plans .hidden-image',
     3
   );
+  setupGalleryEnhancements();
   setupConstructionTimeline();
   scrollToSectionByPath();
 });
