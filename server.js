@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -22,13 +23,26 @@ app.use(express.json());
 // Section keys that map to element IDs in index.ejs
 const sections = ['', 'about', 'construction', 'gallery', 'plans', 'benefits', 'contact'];
 
+function loadConstructionUpdates() {
+  const dataPath = path.join(__dirname, 'data', 'construction-updates.json');
+  try {
+    const raw = fs.readFileSync(dataPath, 'utf8');
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.error('Failed to load construction updates:', error.message);
+    return [];
+  }
+}
+
 // Create routes for each section (/, /about, /gallery, /contact, ...)
 sections.forEach(key => {
   const route = key === '' ? '/' : `/${key}`;
   app.get(route, (req, res) => {
     res.render('index', {
       page: key || 'home',
-      assetVersion: Date.now()
+      assetVersion: Date.now(),
+      constructionUpdates: loadConstructionUpdates()
     });
   });
 });

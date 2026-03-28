@@ -608,11 +608,6 @@ video {
   opacity: 0.9;
 }
 
-.construction-month-card iframe {
-  border: 0;
-  border-radius: 0.5rem;
-}
-
 .construction-month-card p {
   color: #ffffff;
 }
@@ -650,16 +645,64 @@ video {
 
 .construction-details.expanded {
   max-height: 1200px;
+  overflow: visible;
   opacity: 1;
   transform: translateY(0);
   margin-top: 0.8rem;
+}
+
+.construction-media-grid {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.construction-videos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  overflow: visible;
+}
+
+.construction-media-item {
+  display: block;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  overflow: visible;
+  box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+}
+
+.construction-media-item img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
+.construction-video-label {
+  display: block;
+  background: #198754;
+  color: #fff;
+  text-align: center;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+}
+
+.construction-media-item:hover .construction-video-label {
+  background: #157347;
+}
+
+.construction-video-item:hover {
+  transform: scale(2);
+  z-index: 2;
 }
 
 .construction-photos {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 0.75rem;
-  margin-bottom: 0.9rem;
+  overflow: visible;
 }
 
 .construction-photos img {
@@ -668,24 +711,30 @@ video {
   object-fit: cover;
   border-radius: 0.5rem;
   box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+}
+
+.construction-photos img:hover {
+  transform: scale(2);
+  cursor: pointer;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .construction-video-item:hover {
+    transform: scale(1.05);
+  }
+
+  .construction-photos img:hover {
+    transform: scale(1.05);
+  }
 }
 
 .construction-photos:empty {
   display: none;
-  margin-bottom: 0;
 }
-
-.construction-link {
-  color: #6de2de;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.construction-link:hover {
-  color: #f8d7da;
-}
-
-
 
 section[id]:focus {
   outline: none;

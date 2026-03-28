@@ -50,25 +50,40 @@ function applyResponsiveGalleryInitialState() {
   });
 }
 
+function applyResponsivePlansInitialState() {
+  const isSmallScreen = window.matchMedia('(max-width: 768px)').matches;
+  const initiallyVisible = isSmallScreen ? 3 : 6;
+  const planItems = Array.from(document.querySelectorAll('#plans .plans-grid > a'));
+
+  planItems.forEach((item, index) => {
+    if (index >= initiallyVisible) {
+      item.classList.add('hidden-image');
+      item.classList.remove('show');
+    } else {
+      item.classList.remove('hidden-image');
+      item.classList.remove('show');
+    }
+  });
+}
+
 function setupConstructionTimeline() {
   const carousel = document.getElementById('constructionMonthCarousel');
   const prevButton = document.getElementById('constructionMonthPrev');
   const nextButton = document.getElementById('constructionMonthNext');
   const currentLabel = document.getElementById('constructionMonthCurrent');
   const content = document.getElementById('constructionMonthContent');
-  const video = document.getElementById('constructionVideo');
+  const videos = document.getElementById('constructionVideos');
   const description = document.getElementById('constructionDescription');
   const readMoreBtn = document.getElementById('constructionReadMoreBtn');
   const details = document.getElementById('constructionDetails');
   const highlights = document.getElementById('constructionHighlights');
   const photos = document.getElementById('constructionPhotos');
-  const youtubeLink = document.getElementById('constructionYoutubeLink');
   const dataScript = document.getElementById('constructionUpdatesData');
 
   if (
     !carousel || !prevButton || !nextButton || !currentLabel || !content ||
-    !video || !description || !readMoreBtn || !details || !highlights ||
-    !photos || !youtubeLink || !dataScript
+    !videos || !description || !readMoreBtn || !details || !highlights ||
+    !photos || !dataScript
   ) {
     return;
   }
@@ -82,7 +97,12 @@ function setupConstructionTimeline() {
   }
 
   updates = updates
-    .filter((item) => item && item.year && item.month && item.videoId)
+    .map((item) => {
+      if (!item) return null;
+      const monthVideos = Array.isArray(item.videos) ? item.videos : (item.videoId ? [item.videoId] : []);
+      return { ...item, videos: monthVideos };
+    })
+    .filter((item) => item && item.year && item.month && item.videos.length > 0)
     .sort((a, b) => (a.year - b.year) || (a.month - b.month));
 
   if (updates.length === 0) {
@@ -113,17 +133,30 @@ function setupConstructionTimeline() {
     const item = updates[index];
     if (!item) return;
 
-    const embedSrc = `https://www.youtube.com/embed/${item.videoId}?hl=uk&cc_lang_pref=uk&cc_load_policy=1&rel=0`;
-    const videoTitle = `Будівництво за ${monthNames[item.month - 1]} ${item.year}`;
-
+    const currentMonthLabel = `${monthNames[item.month - 1]} ${item.year}`;
     content.classList.add('construction-month-switching');
 
-    if (video.getAttribute('src') !== embedSrc) {
-      video.setAttribute('src', embedSrc);
-    }
-    video.setAttribute('title', videoTitle);
     description.textContent = item.description || '';
-    youtubeLink.setAttribute('href', `https://youtube.com/shorts/${item.videoId}`);
+
+    videos.innerHTML = '';
+    item.videos.forEach((videoId) => {
+      const card = document.createElement('a');
+      card.className = 'construction-media-item construction-video-item';
+      card.href = `https://youtube.com/shorts/${videoId}`;
+      card.target = '_blank';
+      card.rel = 'noopener noreferrer';
+
+      const thumb = document.createElement('img');
+      thumb.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      thumb.alt = `Відео будівництва за ${currentMonthLabel}`;
+
+      const label = document.createElement('span');
+      label.className = 'construction-video-label';
+      label.textContent = 'Дивитись на YouTube';
+
+      card.append(thumb, label);
+      videos.append(card);
+    });
 
     highlights.innerHTML = '';
     if (Array.isArray(item.highlights)) {
@@ -139,7 +172,7 @@ function setupConstructionTimeline() {
       item.photos.forEach((src) => {
         const img = document.createElement('img');
         img.src = src;
-        img.alt = `Фото будівництва ${monthNames[item.month - 1]} ${item.year}`;
+        img.alt = `Фото будівництва ${currentMonthLabel}`;
         img.loading = 'lazy';
         photos.append(img);
       });
@@ -148,7 +181,7 @@ function setupConstructionTimeline() {
     detailsExpanded = false;
     details.classList.remove('expanded');
     readMoreBtn.setAttribute('aria-expanded', 'false');
-    readMoreBtn.textContent = 'Читати більше';
+    readMoreBtn.textContent = 'Дізнатися більше';
 
     window.requestAnimationFrame(() => {
       content.classList.remove('construction-month-switching');
@@ -184,7 +217,7 @@ function setupConstructionTimeline() {
     detailsExpanded = !detailsExpanded;
     details.classList.toggle('expanded', detailsExpanded);
     readMoreBtn.setAttribute('aria-expanded', String(detailsExpanded));
-    readMoreBtn.textContent = detailsExpanded ? 'Приховати деталі' : 'Читати більше';
+    readMoreBtn.textContent = detailsExpanded ? 'Приховати деталі' : 'Дізнатися більше';
   });
 
   renderControls();
@@ -221,12 +254,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   applyResponsiveGalleryInitialState();
+  applyResponsivePlansInitialState();
   setupLoadMoreButton(
     'showMoreBtn',
     '#gallery .hidden-image',
     () => (window.matchMedia('(max-width: 768px)').matches ? 3 : 6)
   );
-  setupLoadMoreButton('showMorePlansBtn', '#plans .hidden-image', 6);
+  setupLoadMoreButton(
+    'showMorePlansBtn',
+    '#plans .hidden-image',
+    () => (window.matchMedia('(max-width: 768px)').matches ? 3 : 6)
+  );
   setupConstructionTimeline();
   scrollToSectionByPath();
 });

@@ -160,77 +160,27 @@
         </div>
 
         <div id="constructionMonthContent" class="construction-month-card" aria-live="polite">
-          <div class="ratio ratio-16x9 mb-3">
-            <iframe
-              id="constructionVideo"
-              src=""
-              title="Будівництво"
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-            ></iframe>
-          </div>
           <p id="constructionDescription" class="mb-2"></p>
+          <ul id="constructionHighlights"></ul>
           <button id="constructionReadMoreBtn" type="button" class="construction-read-more" aria-expanded="false">
-            Читати більше
+            Дізнатися більше
           </button>
           <div id="constructionDetails" class="construction-details">
-            <ul id="constructionHighlights"></ul>
-            <div id="constructionPhotos" class="construction-photos"></div>
-            <a
-              id="constructionYoutubeLink"
-              class="construction-link"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Відкрити відео в YouTube
-            </a>
+            <div class="construction-media-grid">
+              <div id="constructionVideos" class="construction-videos"></div>
+              <div id="constructionPhotos" class="construction-photos"></div>
+            </div>
           </div>
         </div>
 
         <p class="mt-4 text-white text-center">
-          Ми регулярно публікуємо короткі відео з будівельного майданчика, щоб ви могли бачити прогрес у реальному часі.
+          Ми регулярно публікуємо короткі відео та фото з будівельного майданчика, щоб ви могли бачити прогрес у реальному часі.
         </p>
       </div>
     </section>
 
     <script id="constructionUpdatesData" type="application/json">
-      [
-        {
-          "year": 2026,
-          "month": 1,
-          "videoId": "Ajhw8pfRWnk",
-          "description": "Підготовчий етап: організація майданчика, логістика матеріалів та старт основних будівельних робіт.",
-          "highlights": [
-            "Завершено підготовку ділянки до активної фази",
-            "Організовано зони зберігання матеріалів",
-            "Проведено первинні технічні роботи на об'єкті"
-          ]
-        },
-        {
-          "year": 2026,
-          "month": 2,
-          "videoId": "cJAe2Chhm4g",
-          "description": "Активна фаза будівництва: посилення конструктивних елементів та просування фасадних робіт.",
-          "highlights": [
-            "Продовжено конструктивні роботи на ключових рівнях",
-            "Оновлено етап фасадних підготовчих робіт",
-            "Проведено планові інженерні перевірки"
-          ]
-        },
-        {
-          "year": 2026,
-          "month": 3,
-          "videoId": "XuzOk1YKJQw",
-          "description": "Роботи з благоустрою та подальше нарощування темпів внутрішніх і зовнішніх етапів будівництва.",
-          "highlights": [
-            "Розширено фронт робіт на майданчику",
-            "Виконано частину внутрішніх підготовчих етапів",
-            "Покращено організацію зон доступу та безпеки"
-          ]
-        }
-      ]
+      <%- JSON.stringify(constructionUpdates || []) %>
     </script>
 
     <section id="gallery" class="py-5">
