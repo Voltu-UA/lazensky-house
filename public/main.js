@@ -105,12 +105,13 @@ function setupConstructionTimeline() {
   const details = document.getElementById('constructionDetails');
   const highlights = document.getElementById('constructionHighlights');
   const photos = document.getElementById('constructionPhotos');
+  const photosToggleBtn = document.getElementById('constructionShowMorePhotosBtn');
   const dataScript = document.getElementById('constructionUpdatesData');
 
   if (
     !carousel || !prevButton || !nextButton || !currentLabel || !content ||
     !videos || !description || !readMoreBtn || !details || !highlights ||
-    !photos || !dataScript
+    !photos || !photosToggleBtn || !dataScript
   ) {
     return;
   }
@@ -201,8 +202,48 @@ function setupConstructionTimeline() {
         img.src = src;
         img.alt = `Фото будівництва ${currentMonthLabel}`;
         img.loading = 'lazy';
+        img.decoding = 'async';
         photos.append(img);
       });
+    }
+
+    const photoItems = Array.from(photos.querySelectorAll('img'));
+    const photoBatchSize = 4;
+    let visiblePhotoCount = Math.min(photoBatchSize, photoItems.length);
+
+    photoItems.forEach((img, index) => {
+      if (index >= photoBatchSize) {
+        img.classList.add('hidden-image');
+      } else {
+        img.classList.remove('hidden-image');
+      }
+      img.classList.remove('show');
+    });
+
+    const renderPhotoPagination = () => {
+      photoItems.forEach((img, index) => {
+        img.classList.toggle('show', index < visiblePhotoCount);
+      });
+
+      const hasRemaining = visiblePhotoCount < photoItems.length;
+      photosToggleBtn.textContent = hasRemaining ? 'Показати більше' : 'Приховати';
+      photosToggleBtn.setAttribute('aria-expanded', String(!hasRemaining));
+    };
+
+    if (photoItems.length <= photoBatchSize) {
+      photosToggleBtn.style.display = 'none';
+      photosToggleBtn.onclick = null;
+    } else {
+      photosToggleBtn.style.display = 'inline-block';
+      photosToggleBtn.onclick = () => {
+        if (visiblePhotoCount >= photoItems.length) {
+          visiblePhotoCount = photoBatchSize;
+        } else {
+          visiblePhotoCount = Math.min(visiblePhotoCount + photoBatchSize, photoItems.length);
+        }
+        renderPhotoPagination();
+      };
+      renderPhotoPagination();
     }
 
     detailsExpanded = false;
