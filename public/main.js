@@ -128,9 +128,19 @@ function setupConstructionTimeline() {
     .map((item) => {
       if (!item) return null;
       const monthVideos = Array.isArray(item.videos) ? item.videos : (item.videoId ? [item.videoId] : []);
-      return { ...item, videos: monthVideos };
+      const monthHighlights = Array.isArray(item.highlights) ? item.highlights : [];
+      const monthPhotos = Array.isArray(item.photos) ? item.photos : [];
+      return { ...item, videos: monthVideos, highlights: monthHighlights, photos: monthPhotos };
     })
-    .filter((item) => item && item.year && item.month && item.videos.length > 0)
+    .filter((item) => {
+      if (!item || !item.year || !item.month) return false;
+      return Boolean(
+        item.videos.length > 0 ||
+        item.highlights.length > 0 ||
+        item.photos.length > 0 ||
+        item.description
+      );
+    })
     .sort((a, b) => (a.year - b.year) || (a.month - b.month));
 
   if (updates.length === 0) {
@@ -145,14 +155,26 @@ function setupConstructionTimeline() {
   ];
 
   const now = new Date();
-  const currentYear = now.getFullYear();
-  const currentYearItems = updates
-    .map((item, index) => ({ ...item, index }))
-    .filter((item) => item.year === currentYear);
+  const previousMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const previousMonthYear = previousMonthDate.getFullYear();
+  const previousMonth = previousMonthDate.getMonth() + 1;
 
-  const defaultIndex = currentYearItems.length > 0
-    ? currentYearItems.sort((a, b) => b.month - a.month)[0].index
-    : 0;
+  const targetMonthIndex = updates.findIndex(
+    (item) => item.year === previousMonthYear && item.month === previousMonth
+  );
+
+  const lastAvailableUpToTarget = updates
+    .map((item, index) => ({ ...item, index }))
+    .filter((item) => {
+      if (item.year < previousMonthYear) return true;
+      if (item.year > previousMonthYear) return false;
+      return item.month <= previousMonth;
+    })
+    .sort((a, b) => (b.year - a.year) || (b.month - a.month))[0];
+
+  const defaultIndex = targetMonthIndex >= 0
+    ? targetMonthIndex
+    : (lastAvailableUpToTarget ? lastAvailableUpToTarget.index : updates.length - 1);
 
   let selectedIndex = defaultIndex;
   let detailsExpanded = false;
@@ -167,45 +189,46 @@ function setupConstructionTimeline() {
     description.textContent = item.description || '';
 
     videos.innerHTML = '';
-    item.videos.forEach((videoId) => {
-      const card = document.createElement('a');
-      card.className = 'construction-media-item construction-video-item';
-      card.href = `https://youtube.com/shorts/${videoId}`;
-      card.target = '_blank';
-      card.rel = 'noopener noreferrer';
+    if (item.videos.length > 0) {
+      videos.style.display = '';
+      item.videos.forEach((videoId) => {
+        const card = document.createElement('a');
+        card.className = 'construction-media-item construction-video-item';
+        card.href = `https://youtube.com/shorts/${videoId}`;
+        card.target = '_blank';
+        card.rel = 'noopener noreferrer';
 
-      const thumb = document.createElement('img');
-      thumb.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-      thumb.alt = `Відео будівництва за ${currentMonthLabel}`;
+        const thumb = document.createElement('img');
+        thumb.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+        thumb.alt = `Відео будівництва за ${currentMonthLabel}`;
 
-      const label = document.createElement('span');
-      label.className = 'construction-video-label';
-      label.textContent = 'Дивитись на YouTube';
+        const label = document.createElement('span');
+        label.className = 'construction-video-label';
+        label.textContent = 'Дивитись на YouTube';
 
-      card.append(thumb, label);
-      videos.append(card);
-    });
+        card.append(thumb, label);
+        videos.append(card);
+      });
+    } else {
+      videos.style.display = 'none';
+    }
 
     highlights.innerHTML = '';
-    if (Array.isArray(item.highlights)) {
-      item.highlights.forEach((entry) => {
-        const li = document.createElement('li');
-        li.textContent = entry;
-        highlights.append(li);
-      });
-    }
+    item.highlights.forEach((entry) => {
+      const li = document.createElement('li');
+      li.textContent = entry;
+      highlights.append(li);
+    });
 
     photos.innerHTML = '';
-    if (Array.isArray(item.photos)) {
-      item.photos.forEach((src) => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = `Фото будівництва ${currentMonthLabel}`;
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        photos.append(img);
-      });
-    }
+    item.photos.forEach((src) => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = `Фото будівництва ${currentMonthLabel}`;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      photos.append(img);
+    });
 
     const photoItems = Array.from(photos.querySelectorAll('img'));
     const photoBatchSize = 4;
